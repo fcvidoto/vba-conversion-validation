@@ -7,7 +7,17 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Option Compare Database
 Option Explicit
+
+'se for null, manda ""
+Public Function isVazio(valor As Variant) As String
+  If IsNull(valor) Then
+    isVazio = ""
+  Else
+    isVazio = valor
+  End If
+End Function
 
 Function cString(lNumero As Variant) As String
         
@@ -20,28 +30,28 @@ nelse:
     End Function
 
 'Converte valores em booleans
-Function cBoolean(ByVal Valor As Variant) As Boolean
+Function cBoolean(ByVal valor As Variant) As Boolean
     
     'Verifica se o texto possui esses dados
-    If Valor Like "*tru*" Then
+    If valor Like "*tru*" Then
         cBoolean = True
         Exit Function
-    ElseIf Valor Like "*Fals*" Then
+    ElseIf valor Like "*Fals*" Then
         cBoolean = False
         Exit Function
     End If
     
     'Verifica se o texto possui valores 0 ou 1
-    If Valor Like "*1*" Then
+    If valor Like "*1*" Then
         cBoolean = True
         Exit Function
-    ElseIf Valor Like "*0*" Then
+    ElseIf valor Like "*0*" Then
         cBoolean = False
         Exit Function
     End If
     
     'Se não possuir valores nem True or False, compara com vazio e preenchido
-    If Trim(Valor) = vbNullString Or IsNull(Valor) = True Then
+    If Trim(valor) = vbNullString Or IsNull(valor) = True Then
         cBoolean = False
     Else
         cBoolean = True
@@ -95,4 +105,18 @@ Function cCNPJ(ByVal CNPJ As Variant) As String
     cCNPJ = limpa
 
 End Function
+
+'importa de um Excel valores numericos
+Public Function importaNumeros(valor As Variant) As Double
+  
+On Error GoTo trata:
+  If IsNumeric(CDbl(valor)) Then
+    importaNumeros = valor
+  End If
+
+Exit Function
+trata:
+  importaNumeros = 0
+End Function
+
 
